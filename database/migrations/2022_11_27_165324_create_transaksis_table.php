@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('merek');
             $table->string('tanggal_pembayaran');
             $table->string('metode_pembayaran');
+            $table->string('tanggal_peminjaman');
+            $table->string('tanggal_pengembalian');
             $table->string('no_hp_admin');
             $table->string('no_hp_pemesan');
             $table->timestamps();

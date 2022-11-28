@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,31 +22,39 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Menampilkan Semuanya
-Route::get('rentals', [RentalController::class, 'index']);
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    //Menambahkan data
+    Route::post('rentals', [RentalController::class, 'store']);
 
-//Menampilkan data yang dipilih
-Route::get('rentals/{id}', [RentalController::class, 'show']);
+    //Mengedit data
+    Route::put('rentals/{id}', [RentalController::class, 'update']);
 
-//Menambahkan data
-Route::post('rentals', [RentalController::class, 'store']);
+    //Menghapus data
+    Route::delete('rentals/{id}', [RentalController::class, 'destroy']);
+    
+    Route::post('transaksis', [TransaksiController::class, 'store']);
+    Route::put('transaksis/{id}', [TransaksiController::class, 'update']);
+    Route::delete('transaksis/{id}', [TransaksiController::class, 'destroy']);
+});
+    //Menampilkan Semuanya
+    Route::get('rentals', [RentalController::class, 'index']);
 
-//Mengedit data
-Route::put('rentals/{id}', [RentalController::class, 'update']);
+    //Menampilkan data yang dipilih
+    Route::get('rentals/{id}', [RentalController::class, 'show']);
 
-//Menghapus data
-Route::delete('rentals/{id}', [RentalController::class, 'destroy']);
+    Route::get('transaksis', [TransaksiController::class, 'index']);
+    Route::get('transaksis/{id}', [TransaksiController::class, 'show']);
 
+// Route::resource('rentals', RentalController::class)->except(
+//     ['create', 'edit']
+// );
+// Route::resource('transaksis', TransaksiController::class)->except(
+//     ['create', 'edit']
+// );    
 
-Route::get('transaksis', [TransaksiController::class, 'index']);
-Route::get('transaksis/{id}', [TransaksiController::class, 'show']);
-Route::post('transaksis', [TransaksiController::class, 'store']);
-Route::put('transaksis/{id}', [TransaksiController::class, 'update']);
-Route::delete('transaksis/{id}', [TransaksiController::class, 'destroy']);
-
-Route::resource('rentals', RentalController::class)->except(
-    ['create', 'edit']
+Route::post('register', [AuthController::class, 'register']
 );
-Route::resource('transaksis', TransaksiController::class)->except(
-    ['create', 'edit']
-);    
+Route::post('login', [AuthController::class, 'login']
+);
+Route::post('logout', [AuthController::class, 'logout']
+);

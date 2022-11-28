@@ -14,7 +14,7 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksi = transaksis::all();
+        $transaksi = transaksi::all();
         return $transaksi;
     }
 
@@ -44,6 +44,8 @@ class TransaksiController extends Controller
         $transaksi -> merek = $request -> input("merek");
         $transaksi -> tanggal_pembayaran = $request -> input("tanggal_pembayaran");
         $transaksi -> metode_pembayaran = $request -> input("metode_pembayaran");
+        $transaksi -> tanggal_peminjaman = $request -> input("tanggal_peminjaman");
+        $transaksi -> tanggal_pengembalian = $request -> input("tanggal_pengembalian");
         $transaksi -> no_hp_admin = $request -> input("no_hp_admin");
         $transaksi -> no_hp_pemesan = $request -> input("no_hp_pemesan");
         $transaksi -> save();
@@ -63,7 +65,7 @@ class TransaksiController extends Controller
      */
     public function show($id)
     {
-        $transaksi = transaksis::find($id);
+        $transaksi = transaksi::find($id);
         if($transaksi){
             return response() -> json([
                 'status' => 200,
@@ -97,7 +99,7 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $transaksi = transaksis::find($id);
+        $transaksi = transaksi::find($id);
         if($transaksi){
             $transaksi -> id_mobil = $request -> id_mobil ? $request -> id_mobil : $transaksi -> id_mobil;
             $transaksi -> id_user = $request -> id_user ? $request -> id_user : $transaksi -> id_user;
@@ -106,6 +108,8 @@ class TransaksiController extends Controller
             $transaksi -> merek = $request -> merek ? $request -> merek : $transaksi -> merek;
             $transaksi -> tanggal_pembayaran = $request -> tanggal_pembayaran ? $request -> tanggal_pembayaran : $transaksi -> tanggal_pembayaran;
             $transaksi -> metode_pembayaran = $request -> metode_pembayaran ? $request -> metode_pembayaran : $transaksi -> metode_pembayaran;
+            $transaksi -> tanggal_peminjaman = $request -> tanggal_peminjaman ? $request -> tanggal_peminjaman : $transaksi -> tanggal_peminjaman;
+            $transaksi -> tanggal_pengembalian = $request -> tanggal_pengembalian ? $request -> tanggal_pengembalian : $transaksi -> tanggal_pengembalian;
             $transaksi -> no_hp_admin = $request -> no_hp_admin ? $request -> no_hp_admin : $transaksi -> no_hp_admin;
             $transaksi -> no_hp_pemesan = $request -> no_hp_pemesan ? $request -> no_hp_pemesan : $transaksi -> no_hp_pemesan;
             $transaksi -> save();
@@ -129,7 +133,7 @@ class TransaksiController extends Controller
      */
     public function destroy($id)
     {
-        $transaksi = transaksis::where('id', $id) -> first();
+        $transaksi = transaksi::where('id', $id) -> first();
         if($transaksi){
             $transaksi -> delete();
             return response() -> json([
